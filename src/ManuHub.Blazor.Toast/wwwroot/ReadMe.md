@@ -2,6 +2,13 @@
 
 **ManuHub.Blazor.Toast** is a Blazor component for displaying Bootstrap-based toast notifications with customizable types and positions.
 
+## ⚛️ Features
+- Fully integrated with Bootstrap toasts
+- Supports different toast types (Success, Error, Info, Warning, Default)
+- Customizable toast positions (Top-Right, Top-Left, Bottom-Right, Bottom-Left, Center, etc.)
+- JavaScript interop for seamless toast display
+- Compatible with Blazor Server, WebAssembly (WASM), and Hybrid apps
+
 ## 📦 Installation
 
 Install the NuGet package:
@@ -16,7 +23,6 @@ In `Program.cs`, add the toast service:
 ```csharp
 using ManuHub.Blazor.Toast;
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddBlazorToast();
 ```
 
@@ -37,7 +43,7 @@ In `_Imports.razor`, add:
 ### 4️⃣ Add the Toast Component
 In `MainLayout.razor`, include the `<Toast/>` component:
 ```razor
-<Toast/>
+<ToastBS />
 ```
 
 ## 🚀 Usage
@@ -92,7 +98,7 @@ ToastPosition.TopCenter     // Top Center
 ```
 
 ## 📜 License
-[MIT License](LICENSE)
+[MIT License](LICENSE.txt)
 
 ## ✨ Contributions
 Feel free to submit issues or pull requests to improve the package!

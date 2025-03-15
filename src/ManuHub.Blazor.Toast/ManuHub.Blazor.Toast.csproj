@@ -8,12 +8,12 @@
 	<PackageId>ManuHub.Blazor.Toast</PackageId>
 	<Copyright>Copyright © 2025 ManuHub</Copyright>
 	<Authors>Manojbabu</Authors>
-	<Description>BrowserStorage.Wasm is a Razor library designed for browser storage management in WebAssembly (WASM) applications. This package provides easy-to-use implementations for managing data in the browser's cookie, session, and local storage.</Description>
+	<Description>Blazor component for displaying Bootstrap-based toast notifications with customizable types, positions, and JavaScript interop. Supports Blazor Server, WebAssembly (WASM), and Hybrid apps.</Description>
 	<PackageTags>
-		Wasm, WebAssembly, Browser Storage, Cookie, Session, LocalStorage, Blazor, Razor, Async, .NET, Web Storage, Cross-platform, Client-side Storage, Blazor Storage, Persistent Storage, Blazor WebAssembly, Cookie Store, Session Store, Local Store, Storage Management
+		blazor toast notifications bootstrap wasm webassembly server hybrid javascriptinterop ui ux alerts blazorcomponent
 	</PackageTags>
-	<PackageProjectUrl>https://github.com/manusoft/manuhub-blazor-utilities</PackageProjectUrl>
-	<RepositoryUrl>https://github.com/manusoft/manuhub-blazor-utilities</RepositoryUrl>
+	<PackageProjectUrl>https://github.com/manusoft/blazor-bs-toast</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/manusoft/blazor-bs-toast</RepositoryUrl>
 	<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 	<Icon>icon.png</Icon>
 	<PackageIcon>icon.png</PackageIcon>
