@@ -91,7 +91,9 @@ ToastType.Info     // Blue Info Toast
 ToastPosition.BottomLeft    // Bottom Left
 ToastPosition.BottomRight   // Bottom Right
 ToastPosition.BottomCenter  // Bottom Center
-ToastPosition.Center        // Center of Screen
+ToastPosition.MiddleRight   // Middle Right
+ToastPosition.MiddleCenter  // Middle Center
+ToastPosition.MiddleCenter        // Middle Center
 ToastPosition.TopLeft       // Top Left
 ToastPosition.TopRight      // Top Right
 ToastPosition.TopCenter     // Top Center
