@@ -2,7 +2,8 @@ export function showToast(title, message, timestamp, bgClass = "text-bg-light", 
     try {
         const conatnerElement = document.getElementById('toastContainer');
         if (conatnerElement) {
-            conatnerElement.classList.remove("top-0", "bottom-0", "start-0", "end-0", "start-50", "top-50", "translate-middle-x", "translate-middle");
+            conatnerElement.classList
+                .remove("top-0", "bottom-0", "start-0", "end-0", "start-50", "top-50", "translate-middle-x", "translate-middle-y", "translate-middle");
 
             // Add position classes separately
             positionClass.split(" ").forEach(cls => conatnerElement.classList.add(cls));
