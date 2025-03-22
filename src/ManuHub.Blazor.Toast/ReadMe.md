@@ -5,7 +5,7 @@
 ## ⚛️ Features
 - Fully integrated with Bootstrap toasts
 - Supports different toast types (Success, Error, Info, Warning, Default)
-- Customizable toast positions (Top-Right, Top-Left, Bottom-Right, Bottom-Left, Center, etc.)
+- Customizable toast positions (Top-Right, Top-Left, Bottom-Right, Bottom-Left, MiddleCenter, etc.)
 - JavaScript interop for seamless toast display
 - Compatible with Blazor Server, WebAssembly (WASM), and Hybrid apps
 
@@ -29,8 +29,14 @@ builder.Services.AddBlazorToast();
 ### 2️⃣ Include Bootstrap JS
 In `wwwroot/index.html` (Blazor WASM) or `Pages/_Host.cshtml` (Blazor Server),
 or `App.razor` (Blazor Server), add:
+
+File:
 ```html
 <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+```
+OR CDN:
+```html
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 ```
 
 ### 3️⃣ Import the Namespace
@@ -93,7 +99,7 @@ ToastPosition.BottomRight   // Bottom Right
 ToastPosition.BottomCenter  // Bottom Center
 ToastPosition.MiddleRight   // Middle Right
 ToastPosition.MiddleCenter  // Middle Center
-ToastPosition.MiddleCenter        // Middle Center
+ToastPosition.MiddleCenter  // Middle Center
 ToastPosition.TopLeft       // Top Left
 ToastPosition.TopRight      // Top Right
 ToastPosition.TopCenter     // Top Center

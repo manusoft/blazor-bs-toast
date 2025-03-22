@@ -12,12 +12,13 @@
 	<PackageTags>
 		blazor toast notifications bootstrap wasm webassembly server hybrid javascriptinterop ui ux alerts blazorcomponent
 	</PackageTags>
-	<PackageProjectUrl>https://github.com/manusoft/blazor-bs-toast</PackageProjectUrl>
+	<PackageProjectUrl>https://manusoft.github.io/blazor-bs-toast/</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/manusoft/blazor-bs-toast</RepositoryUrl>
 	<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<Icon>icon.png</Icon>
 	<PackageIcon>icon.png</PackageIcon>
-	<Version>1.0.0</Version>
+	<Version>2.0.0</Version>
 	<IsPackable>true</IsPackable>
   </PropertyGroup>
 
@@ -36,6 +37,7 @@
   <ItemGroup>
 	<Content Include="icon.png" Pack="true" PackagePath="" />
 	<Content Include="LICENSE.txt" Pack="true" PackagePath="" />
+	<Content Include="README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>
