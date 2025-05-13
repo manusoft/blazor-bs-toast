@@ -1,4 +1,4 @@
-﻿namespace ManuHub.Toast.BS;
+﻿namespace ManuHub.Blazor.Toast;
 
 public class ToastOptions
 {
@@ -11,4 +11,9 @@ public class ToastOptions
     /// Default toast position.
     /// </summary>
     public ToastPosition Position { get; set; } = ToastPosition.BottomRight;
+
+    /// <summary>
+    /// Default toast style.
+    /// </summary>
+    public ToastStyle ToastStyle { get; set; } = ToastStyle.Custom;
 }

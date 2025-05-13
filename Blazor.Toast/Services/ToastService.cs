@@ -1,4 +1,4 @@
-﻿namespace ManuHub.Toast.BS;
+﻿namespace ManuHub.Blazor.Toast;
 
 public class ToastService : IToastService
 {

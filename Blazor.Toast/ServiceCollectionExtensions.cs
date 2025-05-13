@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace ManuHub.Toast.BS;
+namespace ManuHub.Blazor.Toast;
 
 public static class ServiceCollectionExtensions
 {
@@ -8,6 +8,8 @@ public static class ServiceCollectionExtensions
     {
         var options = new ToastOptions();
         configure?.Invoke(options);
+
+        services.AddSingleton(options); // Register options for injection
 
         services.AddScoped<IToastService>(_ => new ToastService
         {

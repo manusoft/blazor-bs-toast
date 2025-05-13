@@ -1,44 +1,26 @@
-﻿@namespace ManuHub.Toast.BS
+﻿@namespace ManuHub.Blazor.Toast
 @inject IToastService ToastService
+@inject ToastOptions ToastOptions
 
 <div class="toast-host @GetPositionClass()">
     @foreach (var toast in Toasts)
     {
-        @if (ToastStyle == Style.Custom)
-        {
-            <div class="toast-custom @GetCustomBgClass(toast.Level) @GetCustomAnimationClasses(toast.Id)"
-                 @onmouseenter="() => PauseToast(toast.Id)"
-                 @onmouseleave="() => ResumeToast(toast.Id)"
-                 role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="message">@toast.Message</div>
-                <button class="custom-btn-close" @onclick="() => RemoveToast(toast.Id)" aria-label="Close">×</button>
-            </div>
-        }
-        else if (ToastStyle == Style.Bootstrap)
-        {
-            <div class="toast show @GetBootstrapBgClass(toast.Level) @GetBootstrapAnimationClasses(toast.Id)"
-                 @onmouseenter="() => PauseToast(toast.Id)"
-                 @onmouseleave="() => ResumeToast(toast.Id)"
-                 role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="message">@toast.Message</div>
-                <button class="btn-close" @onclick="() => RemoveToast(toast.Id)" aria-label="Close">×</button>
-            </div>
-        }
-        else if (ToastStyle == Style.Tailwind)
-        {
-            <div class="toast @GetTailwindBgClass(toast.Level) @GetTailwindAnimationClasses(toast.Id)"
-                 @onmouseenter="() => PauseToast(toast.Id)"
-                 @onmouseleave="() => ResumeToast(toast.Id)"
-                 role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="message">@toast.Message</div>
-                <button class="btn-close" @onclick="() => RemoveToast(toast.Id)" aria-label="Close">×</button>
-            </div>
-        }
+        <div class="@GetToastClass(toast)"
+             @onmouseenter="() => PauseToast(toast.Id)"
+             @onmouseleave="() => ResumeToast(toast.Id)"
+             role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="message">@toast.Message</div>
+            <button class="@GetCloseButtonClass()" @onclick="() => RemoveToast(toast.Id)" aria-label="Close">
+                @if (ToastOptions.ToastStyle != ToastStyle.Bootstrap)
+                {
+                    <span>x</span>
+                }
+            </button>
+        </div>
     }
 </div>
 
 @code {
-    [Parameter] public Style ToastStyle { get; set; } = Style.Bootstrap; // Default style
     private List<ToastMessage> Toasts = new();
     private Dictionary<Guid, ToastControl> ToastControls = new();
 
@@ -47,13 +29,55 @@
         ToastService.OnShow += RefreshToasts;
     }
 
-    private string GetIcon(ToastLevel level) => level switch
+    private string GetToastClass(ToastMessage toast)
     {
-        ToastLevel.Info => "ℹ️",
-        ToastLevel.Success => "✅",
-        ToastLevel.Warning => "⚠️",
-        ToastLevel.Error => "❌",
-        _ => "🔔"
+        var toastStyle = ToastOptions.ToastStyle;
+
+        var levelClass = toastStyle switch
+        {
+            ToastStyle.Custom => GetCustomBgClass(toast.Level),
+            ToastStyle.Bootstrap => GetBootstrapBgClass(toast.Level),
+            ToastStyle.Tailwind => GetTailwindBgClass(toast.Level),
+            _ => ""
+        };
+
+        var animationClass = GetFadeClass(toast.Id);
+        var baseClass = toastStyle switch
+        {
+            ToastStyle.Custom => "toast-custom",
+            ToastStyle.Bootstrap => "toast show mb-2 px-3 py-2 d-flex justify-content-between align-items-center",
+            ToastStyle.Tailwind => "toast",
+            _ => ""
+        };
+
+        return $"{baseClass} {levelClass} {animationClass}";
+    }
+
+    private string GetCloseButtonClass()
+    {
+        return ToastOptions.ToastStyle switch
+        {
+            ToastStyle.Bootstrap => "btn-close btn-close-white", // Bootstrap class
+            ToastStyle.Tailwind => "text-white bg-transparent border-none text-2xl cursor-pointer", // your custom Tailwind class
+            ToastStyle.Custom => "custom-btn-close", // your custom style
+            _ => "btn-close"
+        };
+    }
+
+    private string GetFadeClass(Guid id)
+    {
+        // if (ToastControls.TryGetValue(id, out var control))
+        //     return control.IsFadingOut ? "toast-fade-out" : "toast-fade-in";
+        return "toast-fade-in";
+    }
+
+    private string GetCustomBgClass(ToastLevel level) => level switch
+    {
+        ToastLevel.Success => "toast-custom-success",
+        ToastLevel.Error => "toast-custom-error",
+        ToastLevel.Warning => "toast-custom-warning",
+        ToastLevel.Info => "toast-custom-info",
+        _ => "toast-custom-info"
     };
 
     private string GetBootstrapBgClass(ToastLevel level) => level switch
@@ -67,73 +91,13 @@
 
     private string GetTailwindBgClass(ToastLevel level) => level switch
     {
-        ToastLevel.Success => "bg-green-500 text-white",
-        ToastLevel.Error => "bg-red-500 text-white",
-        ToastLevel.Warning => "bg-yellow-500 text-black",
-        ToastLevel.Info => "bg-blue-500 text-white",
-        _ => "bg-blue-500 text-white"
+        ToastLevel.Success => "bg-green-500 text-white p-4 rounded shadow-md flex justify-between items-center gap-4",
+        ToastLevel.Error => "bg-red-500 text-white p-4 rounded shadow-md flex justify-between items-center gap-4",
+        ToastLevel.Warning => "bg-yellow-500 text-black p-4 rounded shadow-md flex justify-between items-center gap-4",
+        ToastLevel.Info => "bg-blue-500 text-white p-4 rounded shadow-md flex justify-between items-center gap-4",
+        _ => "bg-blue-500 text-white p-4 rounded shadow-md flex justify-between items-center gap-4"
     };
 
-    private string GetCustomBgClass(ToastLevel level) => level switch
-    {
-        ToastLevel.Success => "toast-custom-success",
-        ToastLevel.Error => "toast-custom-error",
-        ToastLevel.Warning => "toast-custom-warning",
-        ToastLevel.Info => "toast-custom-info",
-        _ => "toast-custom-info"
-    };
-
-    private string GetBootstrapAnimationClasses(Guid id)
-    {
-        // Define your Bootstrap animation logic here
-        return "toast-fade-in";
-    }
-
-    private string GetTailwindAnimationClasses(Guid id)
-    {
-        // Define your Tailwind animation logic here
-        return "toast-fade-in";
-    }
-
-    private string GetCustomAnimationClasses(Guid id)
-    {
-        if (ToastControls.TryGetValue(id, out var control))
-        {
-            // Return the fade-out animation class if it's being removed
-            return control.IsFadingOut
-                ? GetFadeOutClass() // During removal, fade out
-                : GetFadeInClass();  // During display, fade in
-        }
-        return GetFadeInClass();  // Default to fade-in if control is missing
-    }
-
-    private string GetFadeInClass()
-    {
-        return ToastService.Position switch
-        {
-            ToastPosition.TopLeft => "toast-fade-in-left",
-            ToastPosition.TopRight => "toast-fade-in-right",
-            ToastPosition.TopCenter => "toast-fade-in-top",
-            ToastPosition.BottomLeft => "toast-fade-in-left",
-            ToastPosition.BottomRight => "toast-fade-in-right",
-            ToastPosition.BottomCenter => "toast-fade-in-bottom",
-            _ => "toast-fade-in-right" // Default fallback
-        };
-    }
-
-    private string GetFadeOutClass()
-    {
-        return ToastService.Position switch
-        {
-            ToastPosition.TopLeft => "toast-fade-out-left",
-            ToastPosition.TopRight => "toast-fade-out-right",
-            ToastPosition.TopCenter => "toast-fade-out-top",
-            ToastPosition.BottomLeft => "toast-fade-out-left",
-            ToastPosition.BottomRight => "toast-fade-out-right",
-            ToastPosition.BottomCenter => "toast-fade-out-bottom",
-            _ => "toast-fade-out-right" // Default fallback
-        };
-    }
 
     private string GetPositionClass() => ToastService.Position switch
     {
@@ -151,28 +115,23 @@
         var toast = Toasts.FirstOrDefault(t => t.Id == id);
         if (toast != null && ToastControls.TryGetValue(id, out var control))
         {
-            control.IsFadingOut = true; // Start fade-out animation
-            await InvokeAsync(StateHasChanged); // Trigger UI update to apply the animation
-
-            await Task.Delay(500); // Wait for fade-out to complete (match your CSS duration)
-
-            // Remove toast and cancel its timer
+            control.IsFadingOut = true;
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay(300); // Matches fade-out duration
             Toasts.Remove(toast);
             control.TokenSource.Cancel();
             ToastControls.Remove(id);
-
-            await InvokeAsync(StateHasChanged); // Final UI update
-            ToastService.TryDispatchNext(); // Try to show the next toast
+            await InvokeAsync(StateHasChanged);
+            ToastService.TryDispatchNext();
         }
     }
-
 
     private void RefreshToasts(ToastMessage dummy)
     {
         while (
-         (!ToastService.MaxToasts.HasValue || Toasts.Count < ToastService.MaxToasts.Value)
-         && ToastService.TryDequeue(out var toast)
-         && toast != null)
+            (!ToastService.MaxToasts.HasValue || Toasts.Count < ToastService.MaxToasts.Value)
+            && ToastService.TryDequeue(out var toast)
+            && toast != null)
         {
             Toasts.Add(toast);
             ToastControls[toast.Id] = new ToastControl
@@ -196,8 +155,7 @@
         }
         catch (TaskCanceledException) { }
     }
-    
-   
+
     private void PauseToast(Guid toastId)
     {
         if (ToastControls.TryGetValue(toastId, out var control) && !control.IsPaused)
@@ -229,13 +187,6 @@
         public int RemainingTime { get; set; }
         public DateTime LastStartTime { get; set; }
         public bool IsPaused { get; set; }
-        public bool IsFadingOut { get; set; } = false;  
-    }
-
-    public enum Style
-    {
-        Bootstrap,
-        Custom,
-        Tailwind
+        public bool IsFadingOut { get; set; } = false;
     }
 }

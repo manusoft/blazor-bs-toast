@@ -4,8 +4,8 @@
 	<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
 	<Nullable>enable</Nullable>
 	<ImplicitUsings>enable</ImplicitUsings>
-	<RootNamespace>ManuHub.Toast.BS</RootNamespace>
-	<PackageId>Blazor.Toast.BS</PackageId>
+	<RootNamespace>ManuHub.Blazor.Toast</RootNamespace>
+	<PackageId>Blazor.lazor.Toast</PackageId>
 	<Copyright>Copyright © 2025 ManuHub</Copyright>
 	<Authors>Manojbabu</Authors>
 	<Description>Blazor component for displaying Bootstrap-based toast notifications with customizable types, positions, and JavaScript interop. Supports Blazor Server, WebAssembly (WASM), and Hybrid apps.</Description>
