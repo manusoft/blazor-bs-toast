@@ -1,4 +1,4 @@
-using ManuHub.Toast.BS;
+using ManuHub.Blazor.Toast;
 using Test.Blazor.Server.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +12,8 @@ builder.Services.AddRazorComponents()
 builder.Services.AddBlazorToast(options =>
 {
     //options.MaxToasts = 5;
-    options.Position = ToastPosition.BottomLeft;
+    options.ToastStyle = ToastStyle.Tailwind;
+    options.Position = ToastPosition.BottomRight;
 });
 
 var app = builder.Build();
