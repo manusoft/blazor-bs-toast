@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+	<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+	<Nullable>enable</Nullable>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<RootNamespace>ManuHub.Toast.BS</RootNamespace>
+	<PackageId>Blazor.Toast.BS</PackageId>
+	<Copyright>Copyright © 2025 ManuHub</Copyright>
+	<Authors>Manojbabu</Authors>
+	<Description>Blazor component for displaying Bootstrap-based toast notifications with customizable types, positions, and JavaScript interop. Supports Blazor Server, WebAssembly (WASM), and Hybrid apps.</Description>
+	<PackageTags>
+		blazor toast notifications bootstrap wasm webassembly server hybrid javascriptinterop ui ux alerts blazorcomponent
+	</PackageTags>
+	<PackageProjectUrl>https://manusoft.github.io/blazor-bs-toast/</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/manusoft/blazor-bs-toast</RepositoryUrl>
+	<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<Icon>icon.png</Icon>
+	<PackageIcon>icon.png</PackageIcon>
+	<Version>2.0.0</Version>	  
+	<IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="icon.png">
+      <PackagePath></PackagePath>
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="LICENSE.txt">
+      <PackagePath></PackagePath>
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="README.md">
+      <PackagePath></PackagePath>
+      <Pack>true</Pack>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.*" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.*" />
+  </ItemGroup>	
+
+</Project>

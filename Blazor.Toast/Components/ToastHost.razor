@@ -1,0 +1,241 @@
+﻿@namespace ManuHub.Toast.BS
+@inject IToastService ToastService
+
+<div class="toast-host @GetPositionClass()">
+    @foreach (var toast in Toasts)
+    {
+        @if (ToastStyle == Style.Custom)
+        {
+            <div class="toast-custom @GetCustomBgClass(toast.Level) @GetCustomAnimationClasses(toast.Id)"
+                 @onmouseenter="() => PauseToast(toast.Id)"
+                 @onmouseleave="() => ResumeToast(toast.Id)"
+                 role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="message">@toast.Message</div>
+                <button class="custom-btn-close" @onclick="() => RemoveToast(toast.Id)" aria-label="Close">×</button>
+            </div>
+        }
+        else if (ToastStyle == Style.Bootstrap)
+        {
+            <div class="toast show @GetBootstrapBgClass(toast.Level) @GetBootstrapAnimationClasses(toast.Id)"
+                 @onmouseenter="() => PauseToast(toast.Id)"
+                 @onmouseleave="() => ResumeToast(toast.Id)"
+                 role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="message">@toast.Message</div>
+                <button class="btn-close" @onclick="() => RemoveToast(toast.Id)" aria-label="Close">×</button>
+            </div>
+        }
+        else if (ToastStyle == Style.Tailwind)
+        {
+            <div class="toast @GetTailwindBgClass(toast.Level) @GetTailwindAnimationClasses(toast.Id)"
+                 @onmouseenter="() => PauseToast(toast.Id)"
+                 @onmouseleave="() => ResumeToast(toast.Id)"
+                 role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="message">@toast.Message</div>
+                <button class="btn-close" @onclick="() => RemoveToast(toast.Id)" aria-label="Close">×</button>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    [Parameter] public Style ToastStyle { get; set; } = Style.Bootstrap; // Default style
+    private List<ToastMessage> Toasts = new();
+    private Dictionary<Guid, ToastControl> ToastControls = new();
+
+    protected override void OnInitialized()
+    {
+        ToastService.OnShow += RefreshToasts;
+    }
+
+    private string GetIcon(ToastLevel level) => level switch
+    {
+        ToastLevel.Info => "ℹ️",
+        ToastLevel.Success => "✅",
+        ToastLevel.Warning => "⚠️",
+        ToastLevel.Error => "❌",
+        _ => "🔔"
+    };
+
+    private string GetBootstrapBgClass(ToastLevel level) => level switch
+    {
+        ToastLevel.Success => "bg-success text-white",
+        ToastLevel.Error => "bg-danger text-white",
+        ToastLevel.Warning => "bg-warning text-dark",
+        ToastLevel.Info => "bg-info text-white",
+        _ => "bg-info text-white"
+    };
+
+    private string GetTailwindBgClass(ToastLevel level) => level switch
+    {
+        ToastLevel.Success => "bg-green-500 text-white",
+        ToastLevel.Error => "bg-red-500 text-white",
+        ToastLevel.Warning => "bg-yellow-500 text-black",
+        ToastLevel.Info => "bg-blue-500 text-white",
+        _ => "bg-blue-500 text-white"
+    };
+
+    private string GetCustomBgClass(ToastLevel level) => level switch
+    {
+        ToastLevel.Success => "toast-custom-success",
+        ToastLevel.Error => "toast-custom-error",
+        ToastLevel.Warning => "toast-custom-warning",
+        ToastLevel.Info => "toast-custom-info",
+        _ => "toast-custom-info"
+    };
+
+    private string GetBootstrapAnimationClasses(Guid id)
+    {
+        // Define your Bootstrap animation logic here
+        return "toast-fade-in";
+    }
+
+    private string GetTailwindAnimationClasses(Guid id)
+    {
+        // Define your Tailwind animation logic here
+        return "toast-fade-in";
+    }
+
+    private string GetCustomAnimationClasses(Guid id)
+    {
+        if (ToastControls.TryGetValue(id, out var control))
+        {
+            // Return the fade-out animation class if it's being removed
+            return control.IsFadingOut
+                ? GetFadeOutClass() // During removal, fade out
+                : GetFadeInClass();  // During display, fade in
+        }
+        return GetFadeInClass();  // Default to fade-in if control is missing
+    }
+
+    private string GetFadeInClass()
+    {
+        return ToastService.Position switch
+        {
+            ToastPosition.TopLeft => "toast-fade-in-left",
+            ToastPosition.TopRight => "toast-fade-in-right",
+            ToastPosition.TopCenter => "toast-fade-in-top",
+            ToastPosition.BottomLeft => "toast-fade-in-left",
+            ToastPosition.BottomRight => "toast-fade-in-right",
+            ToastPosition.BottomCenter => "toast-fade-in-bottom",
+            _ => "toast-fade-in-right" // Default fallback
+        };
+    }
+
+    private string GetFadeOutClass()
+    {
+        return ToastService.Position switch
+        {
+            ToastPosition.TopLeft => "toast-fade-out-left",
+            ToastPosition.TopRight => "toast-fade-out-right",
+            ToastPosition.TopCenter => "toast-fade-out-top",
+            ToastPosition.BottomLeft => "toast-fade-out-left",
+            ToastPosition.BottomRight => "toast-fade-out-right",
+            ToastPosition.BottomCenter => "toast-fade-out-bottom",
+            _ => "toast-fade-out-right" // Default fallback
+        };
+    }
+
+    private string GetPositionClass() => ToastService.Position switch
+    {
+        ToastPosition.TopLeft => "top-left",
+        ToastPosition.TopRight => "top-right",
+        ToastPosition.TopCenter => "top-center",
+        ToastPosition.BottomLeft => "bottom-left",
+        ToastPosition.BottomRight => "bottom-right",
+        ToastPosition.BottomCenter => "bottom-center",
+        _ => "top-right"
+    };
+
+    private async void RemoveToast(Guid id)
+    {
+        var toast = Toasts.FirstOrDefault(t => t.Id == id);
+        if (toast != null && ToastControls.TryGetValue(id, out var control))
+        {
+            control.IsFadingOut = true; // Start fade-out animation
+            await InvokeAsync(StateHasChanged); // Trigger UI update to apply the animation
+
+            await Task.Delay(500); // Wait for fade-out to complete (match your CSS duration)
+
+            // Remove toast and cancel its timer
+            Toasts.Remove(toast);
+            control.TokenSource.Cancel();
+            ToastControls.Remove(id);
+
+            await InvokeAsync(StateHasChanged); // Final UI update
+            ToastService.TryDispatchNext(); // Try to show the next toast
+        }
+    }
+
+
+    private void RefreshToasts(ToastMessage dummy)
+    {
+        while (
+         (!ToastService.MaxToasts.HasValue || Toasts.Count < ToastService.MaxToasts.Value)
+         && ToastService.TryDequeue(out var toast)
+         && toast != null)
+        {
+            Toasts.Add(toast);
+            ToastControls[toast.Id] = new ToastControl
+                {
+                    RemainingTime = toast.Duration,
+                    LastStartTime = DateTime.UtcNow
+                };
+
+            StateHasChanged();
+            _ = StartTimerAsync(toast);
+        }
+    }
+
+    private async Task StartTimerAsync(ToastMessage toast)
+    {
+        var control = ToastControls[toast.Id];
+        try
+        {
+            await Task.Delay(control.RemainingTime, control.TokenSource.Token);
+            RemoveToast(toast.Id);
+        }
+        catch (TaskCanceledException) { }
+    }
+    
+   
+    private void PauseToast(Guid toastId)
+    {
+        if (ToastControls.TryGetValue(toastId, out var control) && !control.IsPaused)
+        {
+            var elapsed = (int)(DateTime.UtcNow - control.LastStartTime).TotalMilliseconds;
+            control.RemainingTime = Math.Max(0, control.RemainingTime - elapsed);
+            control.TokenSource.Cancel();
+            control.IsPaused = true;
+        }
+    }
+
+    private void ResumeToast(Guid toastId)
+    {
+        if (ToastControls.TryGetValue(toastId, out var control) && control.IsPaused)
+        {
+            control.TokenSource = new CancellationTokenSource();
+            control.LastStartTime = DateTime.UtcNow;
+            control.IsPaused = false;
+
+            var toast = Toasts.FirstOrDefault(t => t.Id == toastId);
+            if (toast != null)
+                _ = Task.Run(() => StartTimerAsync(toast));
+        }
+    }
+
+    private class ToastControl
+    {
+        public CancellationTokenSource TokenSource { get; set; } = new();
+        public int RemainingTime { get; set; }
+        public DateTime LastStartTime { get; set; }
+        public bool IsPaused { get; set; }
+        public bool IsFadingOut { get; set; } = false;  
+    }
+
+    public enum Style
+    {
+        Bootstrap,
+        Custom,
+        Tailwind
+    }
+}

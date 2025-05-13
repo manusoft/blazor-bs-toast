@@ -1,0 +1,234 @@
+﻿.toast-host {
+    position: fixed;
+    z-index: 1100;
+    padding: .5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    pointer-events: none;
+}
+
+.toast-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    margin: 1px; /* Removed margin */
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    min-width: 250px;
+    max-width: 400px;
+    font-family: system-ui, sans-serif;
+    font-size: 0.95rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+    .toast-custom .message {
+        flex: 1;
+        padding-right: 0.75rem;
+    }
+
+    .toast-custom .custom-btn-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.25rem;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .toast-custom .custom-btn-close:hover {
+            cursor: pointer;
+        }
+
+.toast-custom-info {
+    background-color: #3498db;
+}
+
+.toast-custom-success {
+    background-color: #2ecc71;
+}
+
+.toast-custom-warning {
+    background-color: #f39c12;
+}
+
+.toast-custom-error {
+    background-color: #e74c3c;
+}
+
+/* Positions */
+.toast-host.top-right {
+    top: .5rem;
+    right: .5rem;
+    align-items: flex-end;
+}
+
+.toast-host.top-left {
+    top: .5rem;
+    left: .5rem;
+    align-items: flex-start;
+}
+
+.toast-host.bottom-right {
+    bottom: .5rem;
+    right: .5rem;
+    align-items: flex-end;
+}
+
+.toast-host.bottom-left {
+    bottom: .5rem;
+    left: .5rem;
+    align-items: flex-start;
+}
+
+.toast-host.top-center {
+    top: .5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+}
+
+.toast-host.bottom-center {
+    bottom: .5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+}
+
+/* Animantions */
+
+.toast-fade-in-right {
+    animation: slide-in-right 0.4s ease-out forwards;
+}
+
+.toast-fade-out-right {
+    animation: slide-out-right 0.4s ease-in forwards;
+}
+
+.toast-fade-in-left {
+    animation: slide-in-left 0.4s ease-out forwards;
+}
+
+.toast-fade-out-left {
+    animation: slide-out-left 0.4s ease-in forwards;
+}
+
+.toast-fade-in-top {
+    animation: slide-in-top 0.4s ease-out forwards;
+}
+
+.toast-fade-out-top {
+    animation: slide-out-top 0.4s ease-in forwards;
+}
+
+.toast-fade-in-bottom {
+    animation: slide-in-bottom 0.4s ease-out forwards;
+}
+
+.toast-fade-out-bottom {
+    animation: slide-out-bottom 0.4s ease-in forwards;
+}
+
+
+@keyframes slide-in-right {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-out-right {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+@keyframes slide-in-left {
+    from {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-out-left {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes slide-in-top {
+    from {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-out-top {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+}
+
+@keyframes slide-in-bottom {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-out-bottom {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+}
