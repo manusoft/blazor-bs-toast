@@ -12,8 +12,9 @@ builder.Services.AddRazorComponents()
 builder.Services.AddBlazorToast(options =>
 {
     //options.MaxToasts = 5;
-    options.ToastStyle = ToastStyle.Tailwind;
+    options.ToastStyle = ToastStyle.Default;
     options.Position = ToastPosition.BottomRight;
+    options.ShowCloseButton = false;
 });
 
 var app = builder.Build();
