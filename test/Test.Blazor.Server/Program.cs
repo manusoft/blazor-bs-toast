@@ -7,7 +7,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddBlazorToast();
+//builder.Services.AddBlazorToast();
+
+builder.Services.AddBlazorToast(options =>
+{
+    //options.MaxToasts = 5;
+    options.ToastStyle = ToastStyle.Default;
+    options.Position = ToastPosition.BottomRight;
+    options.ShowCloseButton = false;
+});
 
 var app = builder.Build();
 

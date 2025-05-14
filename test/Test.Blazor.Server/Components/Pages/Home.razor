@@ -10,14 +10,14 @@ Welcome to your new app.
 <button class="btn btn-danger" @onclick="ShowSecondToast">Show Error Toast</button>
 
 @code {
-    public async Task ShowToast()
+    public void ShowToast()
     {
-        await ToastService.Show(title: "Hello", message: "Sample Notification.", timestamp: "now");
+        
+        ToastService.Info("Sample Notification.", 5000);
     }
 
-    public async Task ShowSecondToast()
+    public void ShowSecondToast()
     {
-        await ToastService.Show(title: "Error", message: "Something went wrong!", timestamp: "now",
-            type: ToastType.Error, position: ToastPosition.TopRight);
+        ToastService.Error("Paused toasts never resume properly due to TokenSource not being updated.");
     }
 }

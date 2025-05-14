@@ -26,11 +26,10 @@
         <legend>🚀 Toast Type</legend>
         <hr class="border-secondary m-0" />
         <div class="d-md-flex justify-content-between mt-4">
-            <button class="btn btn-light btn-width" @onclick="()=>ShowTypeToast(ToastType.Default)">Default</button>
-            <button class="btn btn-danger btn-width" @onclick="()=>ShowTypeToast(ToastType.Error)">Error</button>
-            <button class="btn btn-info btn-width" @onclick="()=>ShowTypeToast(ToastType.Info)">Info</button>
-            <button class="btn btn-success btn-width" @onclick="()=>ShowTypeToast(ToastType.Success)">Success</button>
-            <button class="btn btn-warning btn-width" @onclick="()=>ShowTypeToast(ToastType.Warning)">Warning</button>
+            <button class="btn btn-danger btn-width" @onclick="() => ShowTypeToast(ToastLevel.Error)">Error</button>
+            <button class="btn btn-info btn-width" @onclick="() => ShowTypeToast(ToastLevel.Info)">Info</button>
+            <button class="btn btn-success btn-width" @onclick="() => ShowTypeToast(ToastLevel.Success)">Success</button>
+            <button class="btn btn-warning btn-width" @onclick="() => ShowTypeToast(ToastLevel.Warning)">Warning</button>
         </div>
     </fieldset>
 
@@ -41,12 +40,6 @@
             <button class="btn btn-primary btn-width" @onclick="()=>ShowPositionToast(ToastPosition.TopLeft)">Top Left</button>
             <button class="btn btn-primary btn-width" @onclick="()=>ShowPositionToast(ToastPosition.TopCenter)">Top Center</button>
             <button class="btn btn-primary btn-width" @onclick="()=>ShowPositionToast(ToastPosition.TopRight)">Top Right</button>
-        </div>
-
-        <div class="d-flex justify-content-between py-3">
-            <button class="btn btn-primary btn-width" @onclick="()=>ShowPositionToast(ToastPosition.MiddleLeft)">Middle Left</button>
-            <button class="btn btn-primary btn-width" @onclick="()=>ShowPositionToast(ToastPosition.MiddleCenter)">Middle Center</button>
-            <button class="btn btn-primary btn-width" @onclick="()=>ShowPositionToast(ToastPosition.MiddleRight)">Middle Right</button>
         </div>
 
         <div class="d-flex justify-content-between">
@@ -75,13 +68,13 @@
 
 @code {
 
-    public async Task ShowTypeToast(ToastType toastType)
+    public void ShowTypeToast(ToastLevel toastType)
     {
-        await ToastService.Show(title: "Hello", message: "Sample Notification.", timestamp: "now", type: toastType);
+        ToastService.ShowToast("Sample Notification.", toastType, 5000);
     }
 
-    public async Task ShowPositionToast(ToastPosition toastPosition)
+    public void ShowPositionToast(ToastPosition toastPosition)
     {
-        await ToastService.Show(title: "Hello", message: "Sample Notification.", timestamp: "now", type: ToastType.Info, position: toastPosition);
+        ToastService.ShowToast("Sample Notification.", ToastLevel.Info, 5000);
     }
 }
