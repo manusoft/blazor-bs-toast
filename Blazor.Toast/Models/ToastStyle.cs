@@ -3,6 +3,6 @@
 public enum ToastStyle
 {
     Bootstrap,
-    Custom,
+    Default,
     Tailwind
 }

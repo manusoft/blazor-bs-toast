@@ -1,13 +1,36 @@
-﻿# ManuHub.Blazor.Toast
+﻿![Static Badge](https://img.shields.io/badge/ManuHub.Blazor.Toast-red) ![NuGet Version](https://img.shields.io/nuget/v/ManuHub.Blazor.Toast) ![.NET](https://img.shields.io/badge/.NET-8%20%7C%209-blueviolet)
 
-**ManuHub.Blazor.Toast** is a Blazor component for displaying Bootstrap-based toast notifications with customizable types and positions.
+# ManuHub.Blazor.Toast
 
-## ⚛️ Features
-- Fully integrated with Bootstrap toasts
-- Supports different toast types (Success, Error, Info, Warning, Default)
-- Customizable toast positions (Top-Right, Top-Left, Bottom-Right, Bottom-Left, MiddleCenter, etc.)
-- JavaScript interop for seamless toast display
-- Compatible with Blazor Server, WebAssembly (WASM), and Hybrid apps
+**ManuHub.Blazor.Toast** is a Blazor conponent for displaying multiple toast notifications with **Bootstrap-based styles** and **Tailwind Styles** and **Default** styles with **customizable options** and **positions**.
+Without javaScript for default, it provides a simple and elegant way to show notifications in your Blazor applications. Other styles are also available, including **Bootstrap** and **Tailwind CSS**. Automatically includes the required CSS and JS files from CDN, you can set it the configurations in the `Program.cs` file.
+
+## ✨ Features
+- ✅ Easy to use
+- ✅ Bootstrap 5.3.3 compatible
+- ✅ Fully customizable
+- ✅ Multiple toast types (Success, Error, Warning, Info)
+- ✅ Multiple toast positions (Top, Bottom, Left, Right, Center)
+- ✅ Multiple styles (Tailwind, Bootstrap, Default)
+- ✅ Animations
+- ✅ Hover pause
+- ✅ Close buttons
+- ✅ Queue + timeouts
+- ✅ Per-toast duration & max toasts
+- ✅ Compatible with Blazor Server, WebAssembly (WASM), and Hybrid apps
+
+## 🎨 Toast Styles 
+- **Bootstrap**: Uses Bootstrap 5.3.3 styles for a modern look.
+- **Tailwind**: Uses Tailwind CSS for a clean and minimalistic design.
+- **Default**: A simple and classic modern design without any framework dependencies.
+
+## ⚛️ Toast Options
+- **ToastStyle**: The style of the toast (Bootstrap, Tailwind, Default).
+- **Position**: The position of the toast on the screen (Top, Bottom, Left, Right, Center).
+- **MaxToasts**: The maximum number of toasts that can be displayed at once.
+- **ShowCloseButton**: Whether to show a close button on the toast.
+- **IncludeCDN**: Whether to include Bootstrap/Tailwind CSS and JS from CDN.
+
 
 ## 📦 Installation
 
@@ -26,30 +49,30 @@ using ManuHub.Blazor.Toast;
 builder.Services.AddBlazorToast();
 ```
 
-### 2️⃣ Include Bootstrap JS
-In `wwwroot/index.html` (Blazor WASM) or `Pages/_Host.cshtml` (Blazor Server),
-or `App.razor` (Blazor Server), add:
+`Toast options` can be configured globally in `Program.cs`:
 
-File:
-```html
-<script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-```
-OR CDN:
-```html
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+```csharp
+builder.Services.AddBlazorToast(options =>
+{
+    options.MaxToasts = 5; // Maximum number of toasts to show at once
+    options.Position = ToastPosition.TopRight; // Default position for all toasts
+    options.ToastStyle = ToastStyle.Bootstrap; // Default style for all toasts 
+    options.ShowCloseButton = true; // Show close button on toasts
+    options.IncludeCDN = true; // Use CDN for Bootstrap/Tailwind CSS and JS
+});
 ```
 
-### 3️⃣ Import the Namespace
+### 2 Import the Namespace
 In `_Imports.razor`, add:
 ```razor
 @using ManuHub.Blazor.Toast
 @inject IToastService ToastService
 ```
 
-### 4️⃣ Add the Toast Component
-In `MainLayout.razor`, include the `<Toast/>` component:
+### 3 Add the Toast Component
+In `MainLayout.razor`, include the `<ToastHost/>` component:
 ```razor
-<ToastBS />
+<ToastHost />
 ```
 
 ## 🚀 Usage
@@ -65,41 +88,58 @@ In `Home.razor`, use the `ToastService` to trigger notifications:
 <h1>Hello, world!</h1>
 
 <button class="btn btn-primary" @onclick="ShowToast">Show Toast</button>
-<button class="btn btn-danger" @onclick="ShowSecondToast">Show Error Toast</button>
+<button class="btn btn-danger" @onclick="ShowInfoToast">Show Info Toast</button>
+<button class="btn btn-success" @onclick="ShowSuccessToast">Show Success Toast</button>
+<button class="btn btn-warning" @onclick="ShowWarningToast">Show Warning Toast</button>
+<button class="btn btn-info" @onclick="ShowErrorToast">Show Error Toast</button>>
 
 @code{
-    public async Task ShowToast()
+    public void ShowToast()
     {
-        await ToastService.Show(title: "Hello", message: "Sample Notification.", timestamp: "now");
+        ToastService.ShowToast("Sample Notification.", ToastLevel.Info, 5000);
     }
 
-    public async Task ShowSecondToast()
+    public async Task ShowInfoToast()
     {
-        await ToastService.Show(title: "Error", message: "Something went wrong!", timestamp: "now",
-            type: ToastType.Error, position: ToastPosition.TopCenter);
+        ToastService.Info("Sample Notification."); // Default duration is 5000ms
+    }
+
+    public async Task ShowSuccessToast()
+    {
+        ToastService.Success("Sample Notification.",7000);
+    }
+
+    public async Task ShowWarningToast()
+    {
+        ToastService.Warning("Sample Notification.",4000);
+    }
+
+    public async Task ShowErrorToast()
+    {
+        ToastService.Error("Sample Notification.",6000);
     }
 }
 ```
 
 ## 🎨 Customization
 
-### Toast Types
+### Toast Level
+Configure the toast level to change the color and icon of the toast:
+
 ```csharp
-ToastType.Default  // Light Toast
-ToastType.Success  // Green Success Toast
-ToastType.Error    // Red Error Toast
-ToastType.Warning  // Yellow Warning Toast
-ToastType.Info     // Blue Info Toast
+ToastLevel.Success  // Green Success Toast
+ToastLevel.Error    // Red Error Toast
+ToastLevel.Warning  // Yellow Warning Toast
+ToastLevel.Info     // Blue Info Toast
 ```
 
 ### Toast Positions
+Configure the toast position to change where the toast appears on the screen:
+
 ```csharp
 ToastPosition.BottomLeft    // Bottom Left
 ToastPosition.BottomRight   // Bottom Right
 ToastPosition.BottomCenter  // Bottom Center
-ToastPosition.MiddleRight   // Middle Right
-ToastPosition.MiddleCenter  // Middle Center
-ToastPosition.MiddleCenter  // Middle Center
 ToastPosition.TopLeft       // Top Left
 ToastPosition.TopRight      // Top Right
 ToastPosition.TopCenter     // Top Center

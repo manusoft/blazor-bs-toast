@@ -5,12 +5,12 @@
 	<Nullable>enable</Nullable>
 	<ImplicitUsings>enable</ImplicitUsings>
 	<RootNamespace>ManuHub.Blazor.Toast</RootNamespace>
-	<PackageId>Blazor.lazor.Toast</PackageId>
+	<PackageId>ManuHub.Blazor.Toast</PackageId>
 	<Copyright>Copyright © 2025 ManuHub</Copyright>
 	<Authors>Manojbabu</Authors>
-	<Description>Blazor component for displaying Bootstrap-based toast notifications with customizable types, positions, and JavaScript interop. Supports Blazor Server, WebAssembly (WASM), and Hybrid apps.</Description>
+	<Description>Blazor component for displaying Bootstrap-based toast notifications with customizable types, positions, Supports Blazor Server, WebAssembly (WASM), and Hybrid apps.</Description>
 	<PackageTags>
-		blazor toast notifications bootstrap wasm webassembly server hybrid javascriptinterop ui ux alerts blazorcomponent
+		blazor toast notifications bootstrap tailwind ccs wasm webassembly server hybrid ui ux alerts blazorcomponent
 	</PackageTags>
 	<PackageProjectUrl>https://manusoft.github.io/blazor-bs-toast/</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/manusoft/blazor-bs-toast</RepositoryUrl>
@@ -18,7 +18,7 @@
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<Icon>icon.png</Icon>
 	<PackageIcon>icon.png</PackageIcon>
-	<Version>2.0.0</Version>	  
+	<Version>3.0.0</Version>	  
 	<IsPackable>true</IsPackable>
   </PropertyGroup>
 

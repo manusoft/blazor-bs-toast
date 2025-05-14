@@ -8,6 +8,10 @@
     pointer-events: none;
 }
 
+    .toast-host > * {
+        pointer-events: auto; /* re-enable on toast content */
+    }
+
 .toast-custom {
     display: flex;
     justify-content: space-between;
@@ -23,14 +27,22 @@
     color: white;
     position: relative;
     overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
+
+    .toast-custom:hover {
+        transform: scale(1.03);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        cursor: pointer;
+    }
+
 
     .toast-custom .message {
         flex: 1;
         padding-right: 0.75rem;
     }
 
-    .toast-custom .custom-btn-close {
+    /*.toast-custom .custom-btn-close {
         background: none;
         border: none;
         color: white;
@@ -45,7 +57,23 @@
 
         .toast-custom .custom-btn-close:hover {
             cursor: pointer;
-        }
+        }*/
+
+
+.custom-btn-close {
+    font-size: 1.25rem;
+    font-weight: bold;
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+    padding: 0 0.25rem;
+}
+
+    .custom-btn-close:hover {
+        color: #ffaaaa; /* or any soft highlight */
+    }
 
 .toast-custom-info {
     background-color: #3498db;
@@ -102,12 +130,13 @@
     align-items: center;
 }
 
+/* Toast class for Tailwind */
 .toast {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
-    margin: 1px;
+    padding: 0;
+    margin: 0px;
     border-radius: 6px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     min-width: 250px;
@@ -118,7 +147,11 @@
     overflow: hidden;
     pointer-events: auto;
 }
-
+    .toast:hover {
+        transform: scale(1.03);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        cursor: pointer;
+    }
 
 /* Animantions */
 

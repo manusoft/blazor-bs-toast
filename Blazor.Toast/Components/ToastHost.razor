@@ -2,6 +2,18 @@
 @inject IToastService ToastService
 @inject ToastOptions ToastOptions
 
+@if(ToastOptions.ToastStyle == ToastStyle.Bootstrap)
+{
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+}
+else if(ToastOptions.ToastStyle == ToastStyle.Tailwind)
+{
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+}
+
 <div class="toast-host @GetPositionClass()">
     @foreach (var toast in Toasts)
     {
@@ -10,12 +22,15 @@
              @onmouseleave="() => ResumeToast(toast.Id)"
              role="alert" aria-live="assertive" aria-atomic="true">
             <div class="message">@toast.Message</div>
-            <button class="@GetCloseButtonClass()" @onclick="() => RemoveToast(toast.Id)" aria-label="Close">
-                @if (ToastOptions.ToastStyle != ToastStyle.Bootstrap)
-                {
-                    <span>x</span>
-                }
-            </button>
+            @if(ToastOptions.ShowCloseButton)
+            {
+                <button class="@GetCloseButtonClass()" @onclick="() => RemoveToast(toast.Id)" aria-label="Close">
+                    @if (ToastOptions.ToastStyle != ToastStyle.Bootstrap)
+                    {
+                        <span>&times;</span>
+                    }
+                </button>
+            }
         </div>
     }
 </div>
@@ -35,7 +50,7 @@
 
         var levelClass = toastStyle switch
         {
-            ToastStyle.Custom => GetCustomBgClass(toast.Level),
+            ToastStyle.Default => GetCustomBgClass(toast.Level),
             ToastStyle.Bootstrap => GetBootstrapBgClass(toast.Level),
             ToastStyle.Tailwind => GetTailwindBgClass(toast.Level),
             _ => ""
@@ -44,7 +59,7 @@
         var animationClass = GetFadeClass(toast.Id);
         var baseClass = toastStyle switch
         {
-            ToastStyle.Custom => "toast-custom",
+            ToastStyle.Default => "toast-custom",
             ToastStyle.Bootstrap => "toast show mb-2 px-3 py-2 d-flex justify-content-between align-items-center",
             ToastStyle.Tailwind => "toast",
             _ => ""
@@ -58,8 +73,8 @@
         return ToastOptions.ToastStyle switch
         {
             ToastStyle.Bootstrap => "btn-close btn-close-white", // Bootstrap class
-            ToastStyle.Tailwind => "text-white bg-transparent border-none text-2xl cursor-pointer", // your custom Tailwind class
-            ToastStyle.Custom => "custom-btn-close", // your custom style
+            ToastStyle.Tailwind => "text-white bg-transparent border-none text-2xl cursor-pointer hover:text-red-300 transition-colors duration-200", // your custom Tailwind class
+            ToastStyle.Default => "custom-btn-close", // your custom style
             _ => "btn-close"
         };
     }
@@ -91,11 +106,11 @@
 
     private string GetTailwindBgClass(ToastLevel level) => level switch
     {
-        ToastLevel.Success => "bg-green-500 text-white p-4 rounded shadow-md flex justify-between items-center gap-4",
-        ToastLevel.Error => "bg-red-500 text-white p-4 rounded shadow-md flex justify-between items-center gap-4",
-        ToastLevel.Warning => "bg-yellow-500 text-black p-4 rounded shadow-md flex justify-between items-center gap-4",
-        ToastLevel.Info => "bg-blue-500 text-white p-4 rounded shadow-md flex justify-between items-center gap-4",
-        _ => "bg-blue-500 text-white p-4 rounded shadow-md flex justify-between items-center gap-4"
+        ToastLevel.Success => "bg-green-500 text-white p-3 py-2 rounded shadow-md flex justify-between items-center gap-4 transition-transform transform hover:scale-105 hover:shadow-xl",
+        ToastLevel.Error => "bg-red-500 text-white p-3 py-2 rounded shadow-md flex justify-between items-center gap-4 transition-transform transform hover:scale-105 hover:shadow-xl",
+        ToastLevel.Warning => "bg-yellow-500 text-black p-3 py-2 rounded shadow-md flex justify-between items-center gap-4 transition-transform transform hover:scale-105 hover:shadow-xl",
+        ToastLevel.Info => "bg-blue-500 text-white p-3 py-2 rounded shadow-md flex justify-between items-center gap-4 transition-transform transform hover:scale-105 hover:shadow-xl",
+        _ => "bg-blue-500 text-white p-3 py-2 rounded shadow-md flex justify-between items-center gap-4 transition-transform transform hover:scale-105 hover:shadow-xl"
     };
 
 
@@ -135,10 +150,10 @@
         {
             Toasts.Add(toast);
             ToastControls[toast.Id] = new ToastControl
-                {
-                    RemainingTime = toast.Duration,
-                    LastStartTime = DateTime.UtcNow
-                };
+            {
+                RemainingTime = toast.Duration,
+                LastStartTime = DateTime.UtcNow
+            };
 
             StateHasChanged();
             _ = StartTimerAsync(toast);
